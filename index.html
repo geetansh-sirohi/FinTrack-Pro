@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FinTrack Pro - Personal Finance Tracker</title>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- ================= AUTH CONTAINER ================= -->
+    <div id="auth-container" class="auth-container">
+      <div class="auth-top-bar">
+        <!-- Theme Toggle Button -->
+        <button
+          class="btn-theme-toggle"
+          id="auth-theme-toggle-btn"
+          title="Toggle Theme"
+        >
+          <i class="fa-solid fa-moon icon-dark"></i>
+          <i class="fa-solid fa-lightbulb icon-light"></i>
+        </button>
+      </div>
+
+      <!-- Login Screen -->
+      <div id="login-card" class="auth-card">
+        <div class="auth-header">
+          <h1>Welcome Back</h1>
+          <p>Login to FinTrack Pro</p>
+        </div>
+        <form id="login-form" class="auth-form">
+          <div class="form-group">
+            <label for="login-username">Username</label>
+            <input
+              type="text"
+              id="login-username"
+              required
+              placeholder="Enter your username"
+            />
+          </div>
+          <div class="form-group">
+            <label for="login-password">Password</label>
+            <div class="password-container">
+              <input
+                type="password"
+                id="login-password"
+                required
+                placeholder="Enter your password"
+              />
+              <button
+                type="button"
+                class="btn-toggle-password"
+                data-target="login-password"
+                title="Toggle Password Visibility"
+              >
+                <i class="fa-solid fa-eye"></i>
+              </button>
+            </div>
+          </div>
+          <div class="error-msg" id="login-error"></div>
+          <button type="submit" class="btn btn-primary btn-block">Login</button>
+        </form>
+        <div class="auth-footer">
+          <p>
+            Don't have an account?
+            <a href="#" id="to-register">Register here</a>
+          </p>
+        </div>
+      </div>
+
+      <!-- Register Screen -->
+      <div id="register-card" class="auth-card hidden">
+        <div class="auth-header">
+          <h1>Create Account</h1>
+          <p>Sign up for FinTrack Pro</p>
+        </div>
+        <form id="register-form" class="auth-form">
+          <div class="form-group">
+            <label for="register-fullname">Full Name</label>
+            <input
+              type="text"
+              id="register-fullname"
+              required
+              placeholder="Enter your full name"
+            />
+          </div>
+          <div class="form-group">
+            <label for="register-username">Username</label>
+            <input
+              type="text"
+              id="register-username"
+              required
+              placeholder="Choose a username"
+            />
+          </div>
+          <div class="form-group">
+            <label for="register-password">Password</label>
+            <div class="password-container">
+              <input
+                type="password"
+                id="register-password"
+                required
+                placeholder="Choose a password"
+              />
+              <button
+                type="button"
+                class="btn-toggle-password"
+                data-target="register-password"
+                title="Toggle Password Visibility"
+              >
+                <i class="fa-solid fa-eye"></i>
+              </button>
+            </div>
+          </div>
+          <div class="error-msg" id="register-error"></div>
+          <button type="submit" class="btn btn-primary btn-block">
+            Register
+          </button>
+        </form>
+        <div class="auth-footer">
+          <p>
+            Already have an account? <a href="#" id="to-login">Login here</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= APP WRAPPER ================= -->
+    <div id="app-wrapper" class="app-wrapper hidden">
+      <!-- Sidebar Navigation -->
+      <aside class="sidebar">
+        <div class="sidebar-brand">
+          <div class="brand-icon">
+            <i class="fa-solid fa-layer-group"></i>
+          </div>
+          <div class="brand-text">
+            <h2>FinTrack Pro</h2>
+            <span>Enterprise Finance</span>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav">
+          <ul>
+            <li>
+              <button class="nav-link active" id="tab-dashboard" onclick="switchTab('dashboard')">
+                <i class="fa-solid fa-border-all"></i>
+                <span>Dashboard</span>
+                <span id="nav-tx-badge" class="nav-badge hidden">0</span>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-link"
+                id="tab-settings"
+                onclick="switchTab('settings')"
+              >
+                <i class="fa-solid fa-gear"></i> Settings
+              </button>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="sidebar-actions">
+          <button class="btn btn-add-transaction" id="open-add-transaction-btn">
+            <i class="fa-solid fa-plus"></i> Add Transaction
+          </button>
+        </div>
+      </aside>
+
+      <!-- Main View Window -->
+      <main class="main-window">
+        <!-- Top Header -->
+        <header class="top-header">
+          <div class="header-right-actions">
+            <!-- Theme Toggle Button -->
+            <button
+              class="btn-theme-toggle"
+              id="theme-toggle-btn"
+              title="Toggle Theme"
+            >
+              <i class="fa-solid fa-moon icon-dark"></i>
+              <i class="fa-solid fa-lightbulb icon-light"></i>
+            </button>
+
+            <div class="user-profile">
+              <span class="user-name" id="user-display-name">geet</span>
+              <button class="btn btn-logout" id="logout-btn">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+              </button>
+            </div>
+          </div>
+        </header>
+
+        <!-- VIEW PANELS -->
+        <div class="views-container">
+          <!-- ================= DASHBOARD PANEL ================= -->
+          <section id="view-dashboard" class="view-panel">
+            <div class="view-title-row">
+              <h1>Financial Overview</h1>
+              <p>Real-time tracking application</p>
+            </div>
+
+            <!-- Cards Summary Row -->
+            <div class="overview-grid">
+              <div class="summary-card card-balance">
+                <div class="summary-icon icon-balance">
+                  <i class="fa-solid fa-building-columns"></i>
+                </div>
+                <div class="summary-content">
+                  <span>Current Balance</span>
+                  <h3 id="card-balance-val">$0.00</h3>
+                </div>
+              </div>
+
+              <div class="summary-card card-income">
+                <div class="summary-icon icon-income">
+                  <i class="fa-solid fa-arrow-trend-up"></i>
+                </div>
+                <div class="summary-content">
+                  <span>Total Income</span>
+                  <h3 id="card-income-val">$0.00</h3>
+                </div>
+              </div>
+
+              <div class="summary-card card-expense">
+                <div class="summary-icon icon-expense">
+                  <i class="fa-solid fa-arrow-trend-down"></i>
+                </div>
+                <div class="summary-content">
+                  <span>Total Expense</span>
+                  <h3 id="card-expense-val">$0.00</h3>
+                </div>
+              </div>
+
+              <div class="summary-card card-transactions">
+                <div class="summary-icon icon-transactions">
+                  <i class="fa-solid fa-piggy-bank"></i>
+                </div>
+                <div class="summary-content">
+                  <span>Total Transactions</span>
+                  <h3 id="card-transactions-val">0</h3>
+                </div>
+              </div>
+            </div>
+
+            <!-- Mid section: Chart & Preferences Row -->
+            <div class="dashboard-middle-row" style="margin-bottom: 32px">
+              <!-- Chart Card -->
+              <div class="dashboard-card chart-card" style="margin-bottom: 0">
+                <h3>Cash Flow Analysis</h3>
+                <div class="chart-container" style="position: relative; height: 260px; width: 100%;">
+                  <canvas id="cash-flow-chart"></canvas>
+                </div>
+              </div>
+
+              <!-- Preferences Card -->
+              <div class="dashboard-card preferences-card">
+                <h3>Preferences</h3>
+                <div class="preferences-content">
+                  <div class="preference-item">
+                    <span>Dark Mode</span>
+                    <label class="switch">
+                      <input type="checkbox" id="dashboard-dark-mode-toggle" />
+                      <span class="slider round"></span>
+                    </label>
+                  </div>
+                  <div class="preference-divider"></div>
+                  <button
+                    class="btn btn-reset-all"
+                    id="dashboard-reset-all-btn"
+                  >
+                    <i class="fa-solid fa-trash"></i> Reset All Data
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bottom Section: Transactions History -->
+            <div class="dashboard-card transactions-card">
+              <div class="transactions-header-row">
+                <h3>All Transactions</h3>
+                <div class="transactions-filters">
+                  <button class="btn btn-export-csv" id="export-csv-btn" title="Export transactions to CSV">
+                    <i class="fa-solid fa-file-csv"></i> Export CSV
+                  </button>
+                  <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input
+                      type="text"
+                      id="transaction-search"
+                      placeholder="Search transactions..."
+                    />
+                  </div>
+                  <div class="select-box">
+                    <select id="transaction-filter-type">
+                      <option value="all">All Types</option>
+                      <option value="income">Income</option>
+                      <option value="expense">Expense</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Table -->
+              <div class="table-container">
+                <table class="transactions-table">
+                  <thead>
+                    <tr>
+                      <th>DATE</th>
+                      <th>DESCRIPTION</th>
+                      <th>CATEGORY</th>
+                      <th>AMOUNT</th>
+                      <th>ACTIONS</th>
+                    </tr>
+                  </thead>
+                  <tbody id="transactions-list-body">
+                    <!-- JS will render this -->
+                  </tbody>
+                </table>
+                <div class="empty-state hidden" id="table-empty-state">
+                  <i class="fa-solid fa-receipt"></i>
+                  <p>No transactions found.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ================= SETTINGS PANEL ================= -->
+          <section id="view-settings" class="view-panel hidden">
+            <div class="view-title-row">
+              <h1>Settings</h1>
+              <p>Manage your account profile and app formatting.</p>
+            </div>
+
+            <!-- Profile Details Card -->
+            <div class="dashboard-card settings-card">
+              <h3>Profile Details</h3>
+              <form id="settings-form" class="settings-form-content">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="settings-fullname">Full Name</label>
+                    <input
+                      type="text"
+                      id="settings-fullname"
+                      required
+                      placeholder="Enter your name"
+                    />
+                  </div>
+
+                  <div class="form-group">
+                    <label for="settings-currency">Primary Currency</label>
+                    <div class="select-box">
+                      <select id="settings-currency">
+                        <option value="USD">USD ($)</option>
+                        <option value="EUR">EUR (€)</option>
+                        <option value="GBP">GBP (£)</option>
+                        <option value="INR">INR (₹)</option>
+                        <option value="JPY">JPY (¥)</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="success-msg" id="settings-success">
+                  Changes saved successfully!
+                </div>
+
+                <div class="settings-action">
+                  <button type="submit" class="btn btn-save">
+                    Save Changes
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Danger Zone Card -->
+            <div class="dashboard-card settings-card danger-zone-card">
+              <h3>Danger Zone</h3>
+              <p class="danger-zone-desc">
+                Permanently delete all transaction history, user accounts, and
+                reset the application to its default state.
+              </p>
+              <div class="reset-box">
+                <button class="btn btn-reset" id="reset-all-btn">
+                  <i class="fa-solid fa-trash"></i> Reset All Data
+                </button>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <!-- ================= TRANSACTION MODAL ================= -->
+    <div id="transaction-modal" class="modal-overlay hidden">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h2>Add Transaction</h2>
+          <button class="btn btn-modal-close" id="close-modal-btn">
+            &times;
+          </button>
+        </div>
+
+        <form id="transaction-form" class="modal-form">
+          <div class="form-group">
+            <label for="tx-type">Type</label>
+            <div class="select-box">
+              <select id="tx-type" required>
+                <option value="expense" selected>Expense</option>
+                <option value="income">Income</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="tx-desc">Description</label>
+            <input
+              type="text"
+              id="tx-desc"
+              required
+              placeholder="e.g. Amazon, Salary, Coffee"
+            />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="tx-amount">Amount</label>
+              <input
+                type="number"
+                id="tx-amount"
+                step="0.01"
+                min="0"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="tx-date">Date</label>
+              <input type="date" id="tx-date" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+          <label for="tx-category">Category</label>
+          <div class="select-box">
+            <select id="tx-category" required>
+              <option value="" disabled selected>Select a category</option>
+              <option value="food & dining">🍔 Food & Dining</option>
+              <option value="shopping">🛍️ Shopping</option>
+              <option value="recharge & bills">🧾 Recharge & Bills</option>
+              <option value="petrol & auto">⛽ Petrol & Auto</option>
+              <option value="utilities">💡 Utilities</option>
+              <option value="salary">💵 Salary</option>
+              <option value="entertainment">🎬 Entertainment</option>
+              <option value="other">📦 Other</option>
+            </select>
+          </div>
+        </div>
+
+          <div class="modal-footer-actions" style="margin-top: 24px">
+            <button type="submit" class="btn btn-primary btn-block">
+              Save Transaction
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ================= EDIT TRANSACTION MODAL ================= -->
+    <div id="edit-transaction-modal" class="modal-overlay hidden">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h2>Edit Transaction</h2>
+          <button class="btn btn-modal-close" id="close-edit-modal-btn">
+            &times;
+          </button>
+        </div>
+
+        <form id="edit-transaction-form" class="modal-form">
+          <!-- Hidden input to store editing transaction ID -->
+          <input type="hidden" id="edit-tx-id" />
+
+          <div class="form-group">
+            <label for="edit-tx-type">Type</label>
+            <div class="select-box">
+              <select id="edit-tx-type" required>
+                <option value="expense">Expense</option>
+                <option value="income">Income</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="edit-tx-desc">Description</label>
+            <input
+              type="text"
+              id="edit-tx-desc"
+              required
+              placeholder="e.g. Amazon, Salary, Coffee"
+            />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="edit-tx-amount">Amount</label>
+              <input
+                type="number"
+                id="edit-tx-amount"
+                step="0.01"
+                min="0"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="edit-tx-date">Date</label>
+              <input type="date" id="edit-tx-date" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+          <label for="edit-tx-category">Category</label>
+          <div class="select-box">
+            <select id="edit-tx-category" required>
+              <option value="" disabled>Select a category</option>
+              <option value="food & dining">🍔 Food & Dining</option>
+              <option value="shopping">🛍️ Shopping</option>
+              <option value="recharge & bills">🧾 Recharge & Bills</option>
+              <option value="petrol & auto">⛽ Petrol & Auto</option>
+              <option value="utilities">💡 Utilities</option>
+              <option value="salary">💵 Salary</option>
+              <option value="entertainment">🎬 Entertainment</option>
+              <option value="other">📦 Other</option>
+            </select>
+          </div>
+        </div>
+
+          <div class="modal-footer-actions" style="margin-top: 24px">
+            <button type="submit" class="btn btn-primary btn-block">
+              Save Changes
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Script -->
+    <script src="script.js"></script>
+  </body>
+</html>
