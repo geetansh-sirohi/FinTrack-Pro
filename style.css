@@ -51,9 +51,9 @@
   --table-header-bg: #f7f7f5;
   
   /* Chart Colors */
-  --chart-income-bg: #dceeb1;   /* Income bar color */
-  --chart-expense-bg: #efd4d4;  /* Expense bar color */
-  --chart-bar-border: 1px solid #000000;
+  --chart-income-bg: #1ea64a;   /* Vibrant Success Green */
+  --chart-expense-bg: #ff3d8b;  /* Vibrant Danger Red */
+  --chart-bar-border: none;
   
   --shadow-sm: none;
   --shadow-md: none;

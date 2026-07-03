@@ -635,12 +635,12 @@ function renderChart(income, expense) {
   // Get active theme state (dark mode check)
   const isDark = document.body.classList.contains('dark-mode');
   
-  // Design system specific colors
-  const incomeBg = isDark ? '#0070f3' : '#dceeb1';
-  const expenseBg = isDark ? '#ff4d4d' : '#efd4d4';
-  const borderColor = isDark ? '#222222' : '#000000';
-  const textLabelColor = isDark ? '#888888' : '#333333';
-  const gridLineColor = isDark ? '#222222' : '#e6e6e6';
+  // Read colors dynamically from CSS variables (single-source of truth)
+  const bodyStyles = getComputedStyle(document.body);
+  const incomeBg = bodyStyles.getPropertyValue('--chart-income-bg').trim() || (isDark ? '#0070f3' : '#1ea64a');
+  const expenseBg = bodyStyles.getPropertyValue('--chart-expense-bg').trim() || (isDark ? '#ff4d4d' : '#ff3d8b');
+  const textLabelColor = bodyStyles.getPropertyValue('--text-secondary').trim() || (isDark ? '#888888' : '#333333');
+  const gridLineColor = bodyStyles.getPropertyValue('--border-color').trim() || (isDark ? '#222222' : '#e6e6e6');
   
   // Format labels using symbol
   const symbol = getCurrencySymbol();
@@ -653,9 +653,8 @@ function renderChart(income, expense) {
         label: 'Cash Flow',
         data: [income, expense],
         backgroundColor: [incomeBg, expenseBg],
-        borderColor: borderColor,
-        borderWidth: isDark ? 0 : 1,
-        borderRadius: isDark ? 8 : 0,
+        borderWidth: 0,
+        borderRadius: 8,
         barPercentage: 0.5,
         categoryPercentage: 0.5
       }]
