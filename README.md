@@ -13,7 +13,7 @@ Created as part of **Sheryians Coding School, Cohort 3.0** assignment.
  
 ## 📸 Preview
  
-![Project Preview](assets/preview.png) *(Take a screenshot of the app and save it in assets/preview.png to show it here)*
+![Project Preview](assets/preview.png)
  
 ---
  
